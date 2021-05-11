@@ -48,7 +48,7 @@ public:
 
     struct op_payload {
         op_type type_;
-        int oprnd_;
+        uint64_t oprnd_;
     };
 
     static ptr<buffer> enc_log(const op_payload& payload) {
@@ -79,7 +79,7 @@ public:
         op_payload payload;
         dec_log(data, payload);
 
-        int64_t prev_value = cur_value_;
+        uint64_t prev_value = cur_value_;
         switch (payload.type_) {
         case ADD:   prev_value += payload.oprnd_;   break;
         case SUB:   prev_value -= payload.oprnd_;   break;
@@ -203,14 +203,14 @@ public:
         when_done(ret, except);
     }
 
-    int64_t get_current_value() const { return cur_value_; }
+    uint64_t get_current_value() const { return cur_value_; }
 
 private:
     struct snapshot_ctx {
-        snapshot_ctx( ptr<snapshot>& s, int64_t v )
+        snapshot_ctx( ptr<snapshot>& s, uint64_t v )
             : snapshot_(s), value_(v) {}
         ptr<snapshot> snapshot_;
-        int64_t value_;
+        uint64_t value_;
     };
 
     void create_snapshot_internal(snapshot& s) {
@@ -233,7 +233,7 @@ private:
     }
 
     // State machine's current value.
-    std::atomic<int64_t> cur_value_;
+    std::atomic<uint64_t> cur_value_;
 
     // Last committed Raft log number.
     std::atomic<uint64_t> last_committed_idx_;

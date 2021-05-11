@@ -70,7 +70,7 @@ void append_log(const std::string& cmd,
                 const std::vector<std::string>& tokens)
 {
     char cmd_char = cmd[0];
-    int operand = atoi( tokens[0].substr(1).c_str() );
+    uint64_t operand = atoll( tokens[0].substr(1).c_str() );
     calc_state_machine::op_type op = calc_state_machine::ADD;
     switch (cmd_char) {
     case '+':   op = calc_state_machine::ADD;   break;
@@ -83,7 +83,7 @@ void append_log(const std::string& cmd,
             return;
         }
         break;
-    default:    op = calc_state_machine::SET;   break;
+    default:    op = calc_state_machine::SET; std::cout << "op=set!" << std::endl;  break;
     };
 
     // Serialize and generate Raft log to append.
@@ -177,7 +177,8 @@ bool do_cmd(const std::vector<std::string>& tokens) {
     } else if ( cmd[0] == '+' ||
                 cmd[0] == '-' ||
                 cmd[0] == '*' ||
-                cmd[0] == '/' ) {
+                cmd[0] == '/' ||
+                cmd[0] == '!') {
         // e.g.) +1
         append_log(cmd, tokens);
 
