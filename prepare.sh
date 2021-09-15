@@ -8,7 +8,7 @@ PROJECT_DIR=`pwd`
 cd ${PROJECT_DIR}
 
 if [ ! -d asio ]; then
-    git clone https://github.com/chriskohlhoff/asio.git ./asio
+    git clone http://166.111.139.139:7800/zyh/asio.git ./asio
     cd asio
     git checkout ${ASIO_RELEASE}
     cd ..
