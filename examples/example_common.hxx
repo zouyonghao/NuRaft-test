@@ -174,9 +174,9 @@ void init_raft(ptr<state_machine> sm_instance) {
     params.election_timeout_upper_bound_ = 4000;
 #else
     // heartbeat: 100 ms, election timeout: 200 - 400 ms.
-    params.heart_beat_interval_ = 100;
-    params.election_timeout_lower_bound_ = 200;
-    params.election_timeout_upper_bound_ = 400;
+    params.heart_beat_interval_ = 50;
+    params.election_timeout_lower_bound_ = 100;
+    params.election_timeout_upper_bound_ = 150;
 #endif
     // Upto 5 logs will be preserved ahead the last snapshot.
     params.reserved_log_items_ = 5;
