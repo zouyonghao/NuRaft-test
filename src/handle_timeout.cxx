@@ -128,8 +128,8 @@ void raft_server::handle_hb_timeout(int32 srv_id) {
     }
 }
 
-extern "C" int __dst_event_trigger(const char *s);
-extern "C" uint32_t __dst_get_random_uint32();
+// extern "C" int __dst_event_trigger(const char *s);
+// extern "C" uint32_t __dst_get_random_uint32();
 void raft_server::restart_election_timer() {
     // don't start the election timer while this server is still catching up the logs
     // or this server is the leader
@@ -156,15 +156,16 @@ void raft_server::restart_election_timer() {
     p_tr("re-schedule election timer");
     last_election_timer_reset_.reset();
 
-    int result = ctx_->get_params()->election_timeout_lower_bound_ + 
-                            __dst_get_random_uint32() % (
-                                ctx_->get_params()->election_timeout_upper_bound_ -
-                                ctx_->get_params()->election_timeout_lower_bound_
-                            );
-    p_wn("Got timeout value: %d", result);
-    __dst_event_trigger(("Got timeout value: " + std::to_string(result)).c_str());
-    // schedule_task(election_task_, rand_timeout_());
-    schedule_task(election_task_, result);
+    // int result = ctx_->get_params()->election_timeout_lower_bound_ + 
+    //                         __dst_get_random_uint32() % (
+    //                             ctx_->get_params()->election_timeout_upper_bound_ -
+    //                             ctx_->get_params()->election_timeout_lower_bound_
+    //                         );
+    // p_wn("Got timeout value: %d", result);
+    // __dst_event_trigger(("Got timeout value: " + std::to_string(result)).c_str());
+    // schedule_task(election_task_, result);
+
+    schedule_task(election_task_, rand_timeout_());
 }
 
 void raft_server::stop_election_timer() {
